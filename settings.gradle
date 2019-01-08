@@ -1,0 +1,4 @@
+include 'www2019-app', 'wot-td-parser'
+
+rootProject.name = 'WWW2019'
+

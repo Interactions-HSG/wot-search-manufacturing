@@ -1,0 +1,8 @@
+mas www2019 {
+
+    agent maintenance_agent
+    agent node_manager
+
+    asl-path: src/main/agt
+}
+
