@@ -54,7 +54,7 @@ public class SearchEngineArtifact extends Artifact {
                 String resultArtifact = splittedResult[splittedResult.length-2].trim().replace("<", "").replace(">", "");
                 result.set(resultArtifact);
 			} else {
-				failed("inc failed","inc_failed","max_value_reached",5);
+				failed("no result","no_result","query_returned_empty");
 			}
             
         } catch (Exception e) {
