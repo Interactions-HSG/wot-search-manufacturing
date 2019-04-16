@@ -1,12 +1,13 @@
 /* Initial beliefs and rules */
 
-robotToMaintainURI("http://localhost:8080/artifacts/robo1").
-lightbulbURI("http://localhost:8080/artifacts/lightbulb").
 searchEngineURI("http://localhost:9090/searchEngine").
 crawlerURI("http://localhost:9090/crawler").
 
+lightbulbURI("http://localhost:8085/artifacts/lightbulb").
+sanFranciscoWsURI("http://localhost:8085/workspaces/wksp1").
+
 autonomous_color(0.409, 0.518).
-manual_color(0.167, 0.04).
+manual_color(0.4, 0.2).
 
 /* Initial goals */
 
@@ -22,12 +23,26 @@ manual_color(0.167, 0.04).
 	makeArtifact("se","www.SearchEngineArtifact",[SearchEngineURI],SE);
 	?crawlerURI(CrawlerURI);
 	makeArtifact("ce", "www.CrawlerEngineArtifact", [CrawlerURI], CE);
-	?robotToMaintainURI(Robo1);
-	.send(node_manager, achieve, generateNewArtifact(Robo1));
-	.print("Registering ", Robo1, " as seed at hypermedia crawler engine");
-	addSeed(Robo1) [CE];
+	//?robotToMaintainURI(Robo1);
+	//.send(node_manager, achieve, generateNewArtifact(Robo1));
+	?sanFranciscoWsURI(SFURI);
+	.print("Registering ", SFURI , " as seed at hypermedia crawler engine");
+	addSeed(SFURI) [CE];
 	?lightbulbURI(Lightbulb)
-	.send(node_manager, achieve, generateNewArtifact(Lightbulb)).
+	.send(node_manager, achieve, generateNewArtifact(Lightbulb));
+	!discoverRobots.
+	
++!discoverRobots <-
+	searchArtifact("eve: <http://w3id.org/eve#>", "", "eve:isRobot", "", SubjectResult, PredicateResult, ObjectResult) [SE];
+	.print("Found robot to monitor: ", SubjectResult);
+	+robotToMaintainURI(SubjectResult);
+	.send(node_manager, achieve, generateNewArtifact(SubjectResult)).
+	
+-!discoverRobots [error_msg(Msg)] <-
+	//.print("Searching for robots");
+	.wait(3000);
+	!discoverRobots.
+	
 	
 +event("maintenance") <- 
 	.print("Received maintenance event from robo1!");
@@ -35,9 +50,12 @@ manual_color(0.167, 0.04).
 	!doMaintenance.
 	
 +!doMaintenance <- 
-	searchArtifact("eve: <http://w3id.org/eve#>", "", "eve:maintains", "", SearchResult) [SE];
+	?robotToMaintainURI(RobotURI);
+	.concat("<", RobotURI, RobotString1);
+	.concat(RobotString1, ">", RobotString);
+	searchArtifact("eve: <https://w3id.org/stn/core#>", "", "stn:locatedAt", "", SubjectResult, PredicateResult, ObjectResult) [SE];
 	//.print("Search Result: ", SearchResult);
-	.print("Autonomous maintenance available for: ", SearchResult);
+	.print("Autonomous maintenance available for: ", RobotURI, " by: ", SubjectResult);
 	//Notify node manager to generate artifact for found robot if found any
 	.print("[Lightbulb GREEN] Autonomous maintenance in progress...");
 	!notifyEngineerAutonomous;
@@ -86,7 +104,7 @@ manual_color(0.167, 0.04).
 /* Focusing Generated Artifacts */
 +thing_artifact_available(ArtifactIRI, ArtifactName, WorkspaceName) : true <-
   	.print("A thing artifact is available: " , ArtifactIRI, " in workspace: ", WorkspaceName);
-  	//joinWorkspace(WorkspaceName, WorkspaceArtId);
+  	joinWorkspace(WorkspaceName, WorkspaceArtId);
 	focusWhenAvailable(ArtifactName).
   
 +artifact_available("www.Robot1", ArtifactName, WorkspaceName) : true <-

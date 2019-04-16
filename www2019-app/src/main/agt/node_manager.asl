@@ -10,7 +10,7 @@
 	.print("Hi from node_manager!");
 	makeArtifact("notification-server", "www.infra.NotificationServerArtifact", [8081], _);
 	start;
-	makeArtifact("envar", "www.infra.WebEnvironmentArtifact", [main], WebEnvArtID);
+	makeArtifact("envar", "www.infra.WebEnvironmentArtifact", [], WebEnvArtID);
 	start.
 
 /* 
