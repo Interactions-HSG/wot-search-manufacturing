@@ -1,4 +1,4 @@
-include 'www2019-app', 'wot-td-parser'
+include 'jacamo-app', 'wot-td-parser'
 
-rootProject.name = 'WWW2019'
+rootProject.name = 'ManuDemo'
 

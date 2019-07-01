@@ -1,0 +1,17 @@
+= Demonstrator Application
+
+A demonstrator application for the maintenance of industrial robots in world-wide manufacturing systems (built with https://github.com/jacamo-lang/jacamo/[JaCaMo]).
+
+== Project structure
+
+This project contains 2 sub-projects:
+
+* the JaCaMo application in `jacamo-app`
+
+* a Turtle parser for the https://www.w3.org/TR/wot-thing-description/[W3C WoT Thing Description] v1.0 in `wot-td-parser`
+
+To run this demonstrator:
+
+* set up the hypermedia environment using https://github.com/andreiciortea/emas2018-yggdrasil/[Yggdrasil] and the requests from our https://www.getpostman.com/collections/c509a6299e357ff4aff0[Postman collection] (see also our https://youtu.be/iuTzzMA-7FI[demo video])
+
+* execute the default Gradle task with `./gradlew`

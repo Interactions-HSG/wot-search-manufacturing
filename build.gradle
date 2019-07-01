@@ -1,4 +1,4 @@
-defaultTasks ':www2019-app:runJaCaMo'
+defaultTasks ':jacamo-app:runJaCaMo'
 
 allprojects {
     repositories {
