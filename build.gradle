@@ -1,0 +1,8 @@
+defaultTasks ':www2019-app:runJaCaMo'
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
